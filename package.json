@@ -1,0 +1,65 @@
+{
+    "name": "pull-request-monitor",
+    "displayName": "Pull Request Monitor",
+    "description": "Monitors the status of GitHub pull requests. Checks for conflicts, status reports, reviews and whether the branch is  up to date.",
+    "icon": "icon.png",
+    "version": "1.0.1",
+    "publisher": "erichbehrens",
+    "engines": {
+        "vscode": "^1.18.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:PullRequestMonitor.setToken",
+        "onCommand:PullRequestMonitor.start",
+        "onCommand:PullRequestMonitor.setMode",
+        "onCommand:PullRequestMonitor.selectRepository",
+        "onCommand:PullRequestMonitor.setRepository"
+    ],
+    "main": "./src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "PullRequestMonitor.start",
+                "title": "Pull Request Monitor > Start"
+            },
+            {
+                "command": "PullRequestMonitor.stop",
+                "title": "Pull Request Monitor > Stop"
+            },
+            {
+                "command": "PullRequestMonitor.refresh",
+                "title": "Pull Request Monitor > Refresh"
+            },
+            {
+                "command": "PullRequestMonitor.setMode",
+                "title": "Pull Request Monitor > Set mode"
+            },
+            {
+                "command": "PullRequestMonitor.selectRepository",
+                "title": "Pull Request Monitor > Select repository"
+            },
+            {
+                "command": "PullRequestMonitor.setRepository",
+                "title": "Pull Request Monitor > Set repository"
+            },
+            {
+                "command": "PullRequestMonitor.setToken",
+                "title": "Pull Request Monitor > Set GitHub token"
+            }
+        ]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": ""
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "eslint": "^4.6.1",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    }
+}
