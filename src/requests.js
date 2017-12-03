@@ -1,4 +1,5 @@
 const { window, commands } = require('vscode');
+const fetch = require('isomorphic-fetch');
 const queries = require('./queries');
 const { getStatesFilter } = require('./utils');
 
