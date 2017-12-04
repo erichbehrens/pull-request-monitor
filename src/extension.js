@@ -11,14 +11,7 @@ const MODES = {
 exports.MODES = MODES;
 let statusBarItems;
 
-// config
-let mode = MODES.VIEWER;
-let token;
 let timer;
-let currentRepository;
-let showMerged = false;
-let showClosed = false;
-let refreshInterval = 60000;
 
 function createStatusBarItem(context, prId, url) {
 	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
@@ -32,7 +25,11 @@ function createStatusBarItem(context, prId, url) {
 
 async function getPullRequests(context) {
 	try {
-		const pullRequests = await loadPullRequests(token, { mode, showMerged, showClosed, repository: currentRepository })
+		const mode = context.globalState.get('mode', MODES.VIEWER) ;
+		const repository = context.globalState.get('currentRepository');
+		const showMerged = context.globalState.get('currentRepository', false);
+		const showClosed = context.globalState.get('currentRepository', false);
+		const pullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository })
 		pullRequests.forEach((pr) => {
 			const prId = `${pr.repository.name}${pr.number}`;
 			if (!statusBarItems) {
@@ -66,13 +63,28 @@ async function getPullRequests(context) {
 		console.log(e)
 		vscode.window.showErrorMessage('Pull Request Monitor error rendering');
 	}
-	timer = setTimeout(() => getPullRequests(context), refreshInterval)
+	// users store intervals in seconds. We convert it to ms and prevent them to set a value lower than 15s
+	let refreshInterval = Math.max(context.globalState.get('refreshInterval', 60) * 1000, 15000);
+	timer = setTimeout(() => getPullRequests(context), refreshInterval);
 }
 
 function resetPullRequests(context) {
 	statusBarItems && Object.keys(statusBarItems).forEach(item => statusBarItems[item].hide());
 	clearTimeout(timer);
 	getPullRequests(context);
+}
+
+function setRepository(context, nameWithOwner) {
+	const currentRepository = context.globalState.get('currentRepository');
+	if (nameWithOwner && (!currentRepository || currentRepository.nameWithOwner !== nameWithOwner)) {
+		context.globalState.update('currentRepository', {
+			nameWithOwner,
+			owner: nameWithOwner.split('/')[0],
+			name: nameWithOwner.split('/')[1],
+		});
+		context.globalState.update('mode', MODES.REPOSITORY);
+		resetPullRequests(context);
+	}
 }
 
 function activate(context) {
@@ -108,13 +120,13 @@ function activate(context) {
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.setMode', function () {
 		vscode.window.showQuickPick([MODES.REPOSITORY, MODES.VIEWER], { placeHolder: 'Please select the mode' }).then(selectedMode => {
-			if (selectedMode && mode !== selectedMode) {
-				if (selectedMode === MODES.REPOSITORY && !currentRepository) {
+			if (selectedMode && context.globalState.get('mode') !== selectedMode) {
+				if (selectedMode === MODES.REPOSITORY && !context.globalState.get('currentRepository')) {
 					vscode.commands.executeCommand('PullRequestMonitor.selectRepository');
 					return;
 				}
-				mode = selectedMode;
-				resetPullRequests(context)
+				context.globalState.update('mode', selectedMode);
+				resetPullRequests(context);
 			}
 		});
 
@@ -123,19 +135,11 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.selectRepository', async () => {
-		const repositories = await loadRepositories(token);
+		const repositories = await loadRepositories(context.globalState.get('token'));
 		const repositoryNames = repositories.map(repository => repository.nameWithOwner);
 
 		vscode.window.showQuickPick(repositoryNames, { placeHolder: 'Please select the repository' }).then(selectedRepository => {
-			if (selectedRepository && (!currentRepository || currentRepository.nameWithOwner !== selectedRepository)) {
-				currentRepository = {
-					nameWithOwner: selectedRepository,
-					owner: selectedRepository.split('/')[0],
-					name: selectedRepository.split('/')[1],
-				}
-				mode = MODES.REPOSITORY;
-				resetPullRequests(context);
-			}
+			setRepository(context, selectedRepository);
 		});
 
 	});
@@ -144,19 +148,7 @@ function activate(context) {
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.setRepository', async () => {
 		vscode.window.showInputBox({ placeHolder: 'Please enter the full repository name, ie: your-team/awesome-project' }).then(selectedRepository => {
-			if (selectedRepository && (!currentRepository || currentRepository.nameWithOwner !== selectedRepository)) {
-				if (selectedRepository.indexOf('/') === -1) {
-					vscode.window.showErrorMessage('Enter a valid repository name, ie: your-team/awesome-project');
-					return;
-				}
-				currentRepository = {
-					nameWithOwner: selectedRepository,
-					owner: selectedRepository.split('/')[0],
-					name: selectedRepository.split('/')[1],
-				}
-				mode = MODES.REPOSITORY;
-				resetPullRequests(context);
-			}
+			setRepository(context, selectedRepository);
 		});
 
 	});
@@ -165,11 +157,11 @@ function activate(context) {
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.setToken', function () {
 
-		vscode.window.showInputBox({ placeHolder: 'Please enter your GitHGub token' }).then(newToken => {
-			if (newToken && mode !== newToken) {
-				token = newToken;
+		vscode.window.showInputBox({ placeHolder: 'Please enter your GitHGub token' }).then(token => {
+			if (token) {
+				context.globalState.update('token', token)
 				resetPullRequests(context);
-				vscode.window.showInformationMessage(`Token saved for current session.`);
+				vscode.window.showInformationMessage(`Token saved.`);
 			}
 		});
 
