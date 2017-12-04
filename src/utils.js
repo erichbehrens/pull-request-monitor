@@ -41,7 +41,7 @@ exports.getMergeableState = (pr, reviews, commit, potentialMergeCommit) => {
 	// https://developer.github.com/v4/reference/enum/mergeablestate/
 	if (['MERGED', 'CLOSED'].includes(pr.state)) return pr.state;
 	if (pr.mergeable === 'MERGEABLE' && reviews && (commit === null /* no tests defined */ || commit.state === 'SUCCESS') && potentialMergeCommit && potentialMergeCommit.status === null) return 'MERGEABLE';
-	if (!reviews || commit === 'FAILURE' || pr.mergeable === 'CONFLICTING') return 'FAILURE';
+	if (!reviews || commit.state === 'FAILURE' || pr.mergeable === 'CONFLICTING') return 'FAILURE';
 	return 'OPEN';
 }
 
