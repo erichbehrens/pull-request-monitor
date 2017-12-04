@@ -146,7 +146,7 @@ function activate(context) {
 
 	context.subscriptions.push(disposable);
 
-	disposable = vscode.commands.registerCommand('PullRequestMonitor.setRepository', async () => {
+	disposable = vscode.commands.registerCommand('PullRequestMonitor.enterRepositoryName', async () => {
 		vscode.window.showInputBox({ placeHolder: 'Please enter the full repository name, ie: your-team/awesome-project' }).then(selectedRepository => {
 			setRepository(context, selectedRepository);
 		});
