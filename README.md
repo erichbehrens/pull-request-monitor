@@ -5,7 +5,7 @@
 
 This extension uses the GitHub api to monitor the state of your pull requests and let you know when it's time to merge or if someone requested changes.
 
-![Statusbar items](./images/statusBarItems.png)
+![Statusbar items](images/statusBarItems.png)
 
 Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor/
 
