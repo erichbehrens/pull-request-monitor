@@ -41,11 +41,11 @@ If you only need to monitor public repositories you can enable `public_repo`, ot
 
 - `PullRequestMonitor.refresh`: refresh pull request state
 
-- `PullRequestMonitor.setMode`: selects the mode `viewer` (your pull requests) or `repository`
+- `PullRequestMonitor.setMode`: select the mode between `viewer` (your pull requests) or `repository`
 
 - `PullRequestMonitor.selectRepository`: select the repository to monitor through the list of your repositories (some private repositories will not appear here, in this case use `PullRequestMonitor.setRepository` )
 
-- `PullRequestMonitor.setRepository`: set the private repository name you want to monitor. Something like `your-team-nam/awesome-project`
+- `PullRequestMonitor.enterRepositoryName`: set the private repository name you want to monitor. Something like `your-team-nam/awesome-project`
 
 ## Known Issues
 

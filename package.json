@@ -23,31 +23,31 @@
         "commands": [
             {
                 "command": "PullRequestMonitor.start",
-                "title": "Pull Request Monitor > Start"
+                "title": "PR Monitor: Start"
             },
             {
                 "command": "PullRequestMonitor.stop",
-                "title": "Pull Request Monitor > Stop"
+                "title": "PR Monitor: Stop"
             },
             {
                 "command": "PullRequestMonitor.refresh",
-                "title": "Pull Request Monitor > Refresh"
+                "title": "PR Monitor: Refresh"
             },
             {
                 "command": "PullRequestMonitor.setMode",
-                "title": "Pull Request Monitor > Set mode"
+                "title": "PR Monitor: Set mode"
             },
             {
                 "command": "PullRequestMonitor.selectRepository",
-                "title": "Pull Request Monitor > Select repository"
+                "title": "PR Monitor: Select repository"
             },
             {
-                "command": "PullRequestMonitor.setRepository",
-                "title": "Pull Request Monitor > Set repository"
+                "command": "PullRequestMonitor.enterRepositoryName",
+                "title": "PR Monitor: Enter repository name"
             },
             {
                 "command": "PullRequestMonitor.setToken",
-                "title": "Pull Request Monitor > Set GitHub token"
+                "title": "PR Monitor: Set GitHub token"
             }
         ]
     },
