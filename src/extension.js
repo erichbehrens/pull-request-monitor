@@ -27,8 +27,8 @@ async function getPullRequests(context) {
 	try {
 		const mode = context.globalState.get('mode', MODES.VIEWER) ;
 		const repository = context.globalState.get('currentRepository');
-		const showMerged = context.globalState.get('currentRepository', false);
-		const showClosed = context.globalState.get('currentRepository', false);
+		const showMerged = context.globalState.get('showMerged', false);
+		const showClosed = context.globalState.get('showClosed', false);
 		const pullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository })
 		pullRequests.forEach((pr) => {
 			const prId = `${pr.repository.name}${pr.number}`;

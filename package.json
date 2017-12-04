@@ -3,7 +3,7 @@
     "displayName": "Pull Request Monitor",
     "description": "Monitors the status of GitHub pull requests. Checks for conflicts, status reports, reviews and whether the branch is  up to date.",
     "icon": "icon.png",
-    "version": "1.0.4",
+    "version": "1.1.2",
     "publisher": "erichbehrens",
     "engines": {
         "vscode": "^1.18.0"
@@ -64,5 +64,9 @@
     },
     "dependencies": {
         "isomorphic-fetch": "^2.2.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/erichbehrens/pull-request-monitor.git"
     }
 }
