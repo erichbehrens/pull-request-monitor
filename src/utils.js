@@ -29,7 +29,7 @@ exports.getPullRequestStateIcon = (value) => {
 exports.getColor = (mergeableState) => {
 	switch (mergeableState) {
 		case 'MERGED':
-		return 'rgba(255, 0, 255, 1)';
+			return 'rgba(255, 0, 255, 1)';
 		case 'MERGEABLE': return 'rgba(57, 255, 20, 1)';
 		case 'CLOSED':
 		case 'FAILURE': return 'rgba(139, 0, 0, 1)';
@@ -57,4 +57,42 @@ exports.getStatesFilter = (showMerged, showClosed) => {
 		states.push('MERGED');
 	}
 	return `states: [${states.join(' ')}]`;
+}
+
+function getReviewsByAuthor(reviews) {
+	return reviews.reduce((ret, { node }) => {
+		ret[node.author.login] = ret[node.author.login] || [];
+		ret[node.author.login].push(node);
+		return ret;
+	}, {});
+}
+
+function getLastStateByAuthor(reviewsByAuthor) {
+	Object.keys(reviewsByAuthor).map((author) => {
+		let lastState;
+		reviewsByAuthor[author].forEach(({ state }) => {
+			if (['CHANGES_REQUESTED', 'APPROVED'].includes(state)) lastState = state;
+		});
+		return lastState;
+	}).filter(item => item);
+}
+
+exports.getReviewState = reviews => {
+	const reviewsCount = reviews.edges.length;
+	let hasPendingChangeRequests;
+	let isApproved;
+	if (reviewsCount > 0) {
+		const reviewsByAuthor = getReviewsByAuthor(reviews.edges);
+		const lastStateByAuthor = getLastStateByAuthor(reviewsByAuthor);
+		hasPendingChangeRequests = lastStateByAuthor.some(state => state === 'CHANGES_REQUESTED');
+		isApproved = lastStateByAuthor.length > 0 && lastStateByAuthor.every(state => state === 'APPROVED');
+	}
+	const hasComments = reviews.edges.some(({ node }) => node.state === 'COMMENTED');
+	const reviewsPassing = reviewsCount === 0 || !hasPendingChangeRequests || isApproved;
+	return {
+		reviewsPassing,
+		hasComments,
+		hasPendingChangeRequests,
+		isApproved,
+	}
 }
