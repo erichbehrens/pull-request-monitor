@@ -3,8 +3,8 @@ exports.getCommitIcon = (value) => {
 	if (!value) return undefined;
 	switch (value.state) {
 		case 'SUCCESS': return '$(check)';
-		case 'PENDING': return '$(sync)';
-		case 'FAILURE': return '$(issue-opened)';
+		case 'PENDING': return '$(kebab-horizontal)';
+		case 'FAILURE': return '$(tools)';
 	}
 }
 
@@ -12,7 +12,7 @@ exports.getMergeableIcon = (value) => {
 	// https://developer.github.com/v4/reference/enum/statusstate/
 	switch (value) {
 		case 'MERGEABLE': return '$(git-merge)';
-		case 'UNKNOWN': return '$(x)';
+		case 'UNKNOWN': return '$(question)';
 		case 'CONFLICTING': return '$(alert)';
 	}
 }
@@ -29,9 +29,9 @@ exports.getPullRequestStateIcon = (value) => {
 exports.getColor = (mergeableState) => {
 	switch (mergeableState) {
 		case 'MERGED':
-		case 'CLOSED':
-			return 'rgba(255, 0, 255, 1)';
+		return 'rgba(255, 0, 255, 1)';
 		case 'MERGEABLE': return 'rgba(57, 255, 20, 1)';
+		case 'CLOSED':
 		case 'FAILURE': return 'rgba(139, 0, 0, 1)';
 		default: return 'rgba(255, 255, 255, 1)';
 	}
