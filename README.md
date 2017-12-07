@@ -49,7 +49,7 @@ Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor/
 
 - `PullRequestMonitor.setToken`: set the GitHub token
 
-- `PullRequestMonitor.start`: start monitoring
+- `PullRequestMonitor.start`: start monitoring = refresh pull request state every minute
 
 - `PullRequestMonitor.stop`: stop monitoring
 
@@ -57,22 +57,14 @@ Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor/
 
 - `PullRequestMonitor.setMode`: select the mode between `viewer` (your pull requests) or `repository`
 
-- `PullRequestMonitor.selectRepository`: select the repository to monitor through the list of your repositories (some private repositories will not appear here, in this case use `PullRequestMonitor.setRepository` )
+- `PullRequestMonitor.selectRepository`: select the repository to monitor through the list of your repositories (some private repositories will not appear here, in this case use `PullRequestMonitor.enterRepositoryName` )
 
 - `PullRequestMonitor.enterRepositoryName`: set the private repository name you want to monitor. Something like `your-team-nam/awesome-project`
 
 ## Known Issues
 
-The extension is still under development, please report any bugs here: https://github.com/erichbehrens/pull-request-monitor/issues
+Please report any bugs here: https://github.com/erichbehrens/pull-request-monitor/issues
 
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release
 
 
 
