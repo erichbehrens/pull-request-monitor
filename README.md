@@ -1,4 +1,4 @@
-# Pull Request Monitor
+# GitHub Pull Request Monitor
 [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/erichbehrens.pull-request-monitor.svg)](https://marketplace.visualstudio.com/items?itemName=erichbehrens.pull-request-monitor)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/erichbehrens.pull-request-monitor.svg)](https://marketplace.visualstudio.com/items?itemName=erichbehrens.pull-request-monitor)
 
@@ -24,11 +24,11 @@ Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor/
 
 **Red**: opposite of green
 
+**White**: waiting for status
 
 #### Missing features
 
 - detect outdated branches
-- show comments and approved reviews with different icons/colors
 
 ## Instructions
 

@@ -1,7 +1,6 @@
-// import {window, commands, Disposable, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
 const vscode = require('vscode');
 const { clearTimeout, setTimeout } = require('timers');
-const { getCommitIcon, getColor, getMergeableIcon, getMergeableState, getPullRequestStateIcon } = require('./utils');
+const { getCommitIcon, getColor, getMergeableIcon, getMergeableState, getPullRequestStateIcon, getReviewState } = require('./utils');
 const { loadPullRequests, loadRepositories } = require('./requests');
 
 const MODES = {
@@ -25,7 +24,7 @@ function createStatusBarItem(context, prId, url) {
 
 async function getPullRequests(context) {
 	try {
-		const mode = context.globalState.get('mode', MODES.VIEWER) ;
+		const mode = context.globalState.get('mode', MODES.VIEWER);
 		const repository = context.globalState.get('currentRepository');
 		const showMerged = context.globalState.get('showMerged', false);
 		const showClosed = context.globalState.get('showClosed', false);
@@ -38,17 +37,24 @@ async function getPullRequests(context) {
 			if (!statusBarItems[prId]) {
 				createStatusBarItem(context, prId, pr.url);
 			}
-			const reviewsCount = pr.reviews.edges.length;
-			const reviewsApproved = reviewsCount === 0 || (pr.reviews.edges.every(({ node }) => ['APPROVED', 'COMMENTED'].includes(node.state)));
-			const mergeableState = getMergeableState(pr, reviewsApproved, pr.commits.nodes[0].commit.status, pr.potentialMergeCommit);
+			const {
+				reviewsPassing,
+				hasComments,
+				hasPendingChangeRequests,
+				isApproved
+			} = getReviewState(pr.reviews);
+			const mergeableState = getMergeableState(pr, reviewsPassing, pr.commits.nodes[0].commit.status, pr.potentialMergeCommit);
 			const closed = mergeableState === 'CLOSED';
+
 			const statusBarItem = statusBarItems[prId];
 			const text = [
 				getPullRequestStateIcon(pr.state),
 				pr.number,
 				!pr.merged && !closed && getCommitIcon(pr.commits.nodes[0].commit.status),
 				!pr.merged && !closed && getMergeableIcon(pr.mergeable),
-				!closed && reviewsCount > 0 && (reviewsApproved ? '$(thumbsup)' : '$(thumbsdown)'),
+				hasComments && '$(comment)',
+				hasPendingChangeRequests && '$(thumbsdown)',
+				isApproved && '$(thumbsup)',
 				!closed && pr.potentialCommit && pr.potentialCommit.status,
 				!closed && pr.potentialCommit && pr.potentialCommit.status && pr.potentialCommit.status.state,
 			]
