@@ -84,8 +84,10 @@ exports.getReviewState = reviews => {
 	if (reviewsCount > 0) {
 		const reviewsByAuthor = getReviewsByAuthor(reviews.edges);
 		const lastStateByAuthor = getLastStateByAuthor(reviewsByAuthor);
-		hasPendingChangeRequests = lastStateByAuthor.some(state => state === 'CHANGES_REQUESTED');
-		isApproved = lastStateByAuthor.length > 0 && lastStateByAuthor.every(state => state === 'APPROVED');
+		if (lastStateByAuthor && lastStateByAuthor.length > 0) {
+			hasPendingChangeRequests = lastStateByAuthor.some(state => state === 'CHANGES_REQUESTED');
+			isApproved = lastStateByAuthor.every(state => state === 'APPROVED');
+		}
 	}
 	const hasComments = reviews.edges.some(({ node }) => node.state === 'COMMENTED');
 	const reviewsPassing = reviewsCount === 0 || !hasPendingChangeRequests || isApproved;
