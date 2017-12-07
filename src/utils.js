@@ -68,7 +68,7 @@ function getReviewsByAuthor(reviews) {
 }
 
 function getLastStateByAuthor(reviewsByAuthor) {
-	Object.keys(reviewsByAuthor).map((author) => {
+	return Object.keys(reviewsByAuthor).map((author) => {
 		let lastState;
 		reviewsByAuthor[author].forEach(({ state }) => {
 			if (['CHANGES_REQUESTED', 'APPROVED'].includes(state)) lastState = state;
