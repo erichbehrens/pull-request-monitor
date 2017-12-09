@@ -8,7 +8,7 @@
     "author": "Erich Behrens <me@eb1.it>",
     "license": "MIT",
     "bugs": {
-      "url": "https://github.com/erichbehrens/pull-request-monitor/issues"
+        "url": "https://github.com/erichbehrens/pull-request-monitor/issues"
     },
     "homepage": "https://github.com/erichbehrens/pull-request-monitor#readme",
     "engines": {
@@ -59,7 +59,8 @@
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "jest"
+        "test": "jest",
+        "lint": "eslint src"
     },
     "devDependencies": {
         "typescript": "^2.6.1",
