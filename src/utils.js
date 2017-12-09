@@ -6,7 +6,7 @@ exports.getCommitIcon = (value) => {
 		case 'PENDING': return '$(kebab-horizontal)';
 		case 'FAILURE': return '$(tools)';
 	}
-}
+};
 
 exports.getMergeableIcon = (value) => {
 	// https://developer.github.com/v4/reference/enum/statusstate/
@@ -15,7 +15,7 @@ exports.getMergeableIcon = (value) => {
 		case 'UNKNOWN': return '$(question)';
 		case 'CONFLICTING': return '$(alert)';
 	}
-}
+};
 
 exports.getPullRequestStateIcon = (value) => {
 	// https://developer.github.com/v4/reference/enum/pullrequeststate/
@@ -24,7 +24,7 @@ exports.getPullRequestStateIcon = (value) => {
 		case 'OPEN': return '$(git-pull-request)';
 		case 'CLOSED': return '$(x)';
 	}
-}
+};
 
 exports.getColor = (mergeableState) => {
 	switch (mergeableState) {
@@ -34,17 +34,17 @@ exports.getColor = (mergeableState) => {
 		case 'FAILURE': return 'rgba(139, 0, 0, 1)';
 		default: return 'rgba(255, 255, 255, 1)';
 	}
-}
+};
 
 exports.getMergeableState = (pr, reviews) => {
 	// https://developer.github.com/v4/reference/enum/mergeablestate/
-	const commit = pr.commits.nodes[0].commit.status
+	const commit = pr.commits.nodes[0].commit.status;
 	const { potentialMergeCommit } = pr;
 	if (['MERGED', 'CLOSED'].includes(pr.state)) return pr.state;
 	if (pr.mergeable === 'MERGEABLE' && reviews && (commit === null /* no tests defined */ || commit.state === 'SUCCESS') && potentialMergeCommit && potentialMergeCommit.status === null) return 'MERGEABLE';
 	if (!reviews || commit.state === 'FAILURE' || pr.mergeable === 'CONFLICTING') return 'FAILURE';
 	return 'OPEN';
-}
+};
 
 exports.getStatesFilter = (showMerged, showClosed) => {
 	if (showMerged && showClosed) {
@@ -58,7 +58,7 @@ exports.getStatesFilter = (showMerged, showClosed) => {
 		states.push('MERGED');
 	}
 	return `states: [${states.join(' ')}]`;
-}
+};
 
 function getReviewsByAuthor(reviews) {
 	return reviews.reduce((ret, { node }) => {
@@ -97,8 +97,8 @@ exports.getReviewState = reviews => {
 		hasComments,
 		hasPendingChangeRequests,
 		isApproved,
-	}
-}
+	};
+};
 
 /* test exports */
 exports.getReviewsByAuthor = getReviewsByAuthor;

@@ -17,7 +17,7 @@ async function execQuery(token, query) {
 		const { data } = await res.json();
 		return data;
 	} catch (e) {
-		console.log(e)
+		console.error(e); // eslint-disable-line no-console
 		window.showErrorMessage('Pull Request Monitor error fetching data');
 	}
 }
@@ -34,10 +34,10 @@ exports.loadPullRequests = async (token, { mode, showMerged, showClosed, reposit
 	const data = await execQuery(token, query);
 	const pullRequests = data[mode].pullRequests.nodes;
 	return pullRequests;
-}
+};
 
 exports.loadRepositories = async (token) => {
-	const data = await execQuery(token, queries.repositories)
+	const data = await execQuery(token, queries.repositories);
 	const repositories = data.viewer.repositories.nodes;
 	return repositories;
-}
+};

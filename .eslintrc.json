@@ -19,6 +19,12 @@
         "no-undef": "error",
         "no-unreachable": "warn",
         "no-unused-vars": "error",
-        "valid-typeof": "warn"
+        "valid-typeof": "warn",
+        "space-before-function-paren": ["error", {"named": "never", "asyncArrow": "always"}],
+        "space-in-parens": ["error", "never"],
+        "no-console": "error",
+        "semi": "error",
+        "comma-style": ["error", "last"],
+        "comma-dangle": ["error", "always-multiline"]
     }
 }
