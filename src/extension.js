@@ -123,18 +123,16 @@ function activate(context) {
 
 	context.subscriptions.push(disposable);
 
-	disposable = vscode.commands.registerCommand('PullRequestMonitor.setMode', () => {
-		vscode.window.showQuickPick([MODES.REPOSITORY, MODES.VIEWER], { placeHolder: 'Please select the mode' }).then(selectedMode => {
-			if (selectedMode && context.globalState.get('mode') !== selectedMode) {
-				if (selectedMode === MODES.REPOSITORY && !context.globalState.get('currentRepository')) {
-					vscode.commands.executeCommand('PullRequestMonitor.selectRepository');
-					return;
-				}
-				context.globalState.update('mode', selectedMode);
-				resetPullRequests(context);
+	disposable = vscode.commands.registerCommand('PullRequestMonitor.setMode', async () => {
+		const selectedMode = await vscode.window.showQuickPick([MODES.REPOSITORY, MODES.VIEWER], { placeHolder: 'Please select the mode' });
+		if (selectedMode && context.globalState.get('mode') !== selectedMode) {
+			if (selectedMode === MODES.REPOSITORY && !context.globalState.get('currentRepository')) {
+				vscode.commands.executeCommand('PullRequestMonitor.selectRepository');
+				return;
 			}
-		});
-
+			context.globalState.update('mode', selectedMode);
+			resetPullRequests(context);
+		}
 	});
 
 	context.subscriptions.push(disposable);
@@ -142,34 +140,26 @@ function activate(context) {
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.selectRepository', async () => {
 		const repositories = await loadRepositories(context.globalState.get('token'));
 		const repositoryNames = repositories.map(repository => repository.nameWithOwner);
-
-		vscode.window.showQuickPick(repositoryNames, { placeHolder: 'Please select the repository' }).then(selectedRepository => {
-			setRepository(context, selectedRepository);
-		});
-
+		const selectedRepository = await vscode.window.showQuickPick(repositoryNames, { placeHolder: 'Please select the repository' });
+		setRepository(context, selectedRepository);
 	});
 
 	context.subscriptions.push(disposable);
 
-	disposable = vscode.commands.registerCommand('PullRequestMonitor.enterRepositoryName', () => {
-		vscode.window.showInputBox({ placeHolder: 'Please enter the full repository name, ie: your-team/awesome-project' }).then(selectedRepository => {
-			setRepository(context, selectedRepository);
-		});
-
+	disposable = vscode.commands.registerCommand('PullRequestMonitor.enterRepositoryName', async () => {
+		const selectedRepository = await vscode.window.showInputBox({ placeHolder: 'Please enter the full repository name, ie: your-team/awesome-project' });
+		setRepository(context, selectedRepository);
 	});
 
 	context.subscriptions.push(disposable);
 
-	disposable = vscode.commands.registerCommand('PullRequestMonitor.setToken', () => {
-
-		vscode.window.showInputBox({ placeHolder: 'Please enter your GitHGub token' }).then(token => {
-			if (token) {
-				context.globalState.update('token', token);
-				resetPullRequests(context);
-				vscode.window.showInformationMessage(`Token saved.`);
-			}
-		});
-
+	disposable = vscode.commands.registerCommand('PullRequestMonitor.setToken', async () => {
+		const token = await vscode.window.showInputBox({ placeHolder: 'Please enter your GitHGub token' });
+		if (token) {
+			context.globalState.update('token', token);
+			resetPullRequests(context);
+			vscode.window.showInformationMessage(`Token saved.`);
+		}
 	});
 
 	context.subscriptions.push(disposable);
