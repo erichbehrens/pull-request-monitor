@@ -5,6 +5,12 @@
     "icon": "icon.png",
     "version": "1.2.0",
     "publisher": "erichbehrens",
+    "author": "Erich Behrens <me@eb1.it>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/erichbehrens/pull-request-monitor/issues"
+    },
+    "homepage": "https://github.com/erichbehrens/pull-request-monitor#readme",
     "engines": {
         "vscode": "^1.18.0"
     },
@@ -53,12 +59,14 @@
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": ""
+        "test": "jest",
+        "lint": "eslint src"
     },
     "devDependencies": {
         "typescript": "^2.6.1",
         "vscode": "^1.1.6",
         "eslint": "^4.6.1",
+        "jest": "^21.2.1",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42"
     },

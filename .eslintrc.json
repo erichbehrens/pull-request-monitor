@@ -3,21 +3,28 @@
         "browser": false,
         "commonjs": true,
         "es6": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
+        "ecmaVersion": 2017,
         "sourceType": "module"
     },
     "rules": {
-        "no-const-assign": "warn",
-        "no-this-before-super": "warn",
-        "no-undef": "warn",
+        "indent": ["error", "tab", { "SwitchCase": 1 }],
+        "no-const-assign": "error",
+        "no-undef": "error",
         "no-unreachable": "warn",
-        "no-unused-vars": "warn",
-        "constructor-super": "warn",
-        "valid-typeof": "warn"
+        "no-unused-vars": "error",
+        "valid-typeof": "warn",
+        "space-before-function-paren": ["error", {"named": "never", "asyncArrow": "always"}],
+        "space-in-parens": ["error", "never"],
+        "no-console": "error",
+        "semi": "error",
+        "comma-style": ["error", "last"],
+        "comma-dangle": ["error", "always-multiline"]
     }
 }
