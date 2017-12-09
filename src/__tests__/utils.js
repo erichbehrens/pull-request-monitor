@@ -1,4 +1,3 @@
-const {test, expect } = require('jest');
 const { getReviewState, getReviewsByAuthor, getLastStateByAuthor } = require('../utils');
 
 const reviews = [
