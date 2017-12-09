@@ -37,8 +37,10 @@ exports.getColor = (mergeableState) => {
 	}
 }
 
-exports.getMergeableState = (pr, reviews, commit, potentialMergeCommit) => {
+exports.getMergeableState = (pr, reviews) => {
 	// https://developer.github.com/v4/reference/enum/mergeablestate/
+	const commit = pr.commits.nodes[0].commit.status
+	const { potentialMergeCommit } = pr;
 	if (['MERGED', 'CLOSED'].includes(pr.state)) return pr.state;
 	if (pr.mergeable === 'MERGEABLE' && reviews && (commit === null /* no tests defined */ || commit.state === 'SUCCESS') && potentialMergeCommit && potentialMergeCommit.status === null) return 'MERGEABLE';
 	if (!reviews || commit.state === 'FAILURE' || pr.mergeable === 'CONFLICTING') return 'FAILURE';
@@ -98,3 +100,7 @@ exports.getReviewState = reviews => {
 		isApproved,
 	}
 }
+
+/* test exports */
+exports.getReviewsByAuthor = getReviewsByAuthor;
+exports.getLastStateByAuthor = getLastStateByAuthor;

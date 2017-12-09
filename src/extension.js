@@ -43,7 +43,7 @@ async function getPullRequests(context) {
 				hasPendingChangeRequests,
 				isApproved
 			} = getReviewState(pr.reviews);
-			const mergeableState = getMergeableState(pr, reviewsPassing, pr.commits.nodes[0].commit.status, pr.potentialMergeCommit);
+			const mergeableState = getMergeableState(pr, reviewsPassing);
 			const closed = mergeableState === 'CLOSED';
 
 			const statusBarItem = statusBarItems[prId];
