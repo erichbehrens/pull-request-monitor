@@ -5,6 +5,12 @@
     "icon": "icon.png",
     "version": "1.2.0",
     "publisher": "erichbehrens",
+    "author": "Erich Behrens <me@eb1.it>",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/erichbehrens/pull-request-monitor/issues"
+    },
+    "homepage": "https://github.com/erichbehrens/pull-request-monitor#readme",
     "engines": {
         "vscode": "^1.18.0"
     },
