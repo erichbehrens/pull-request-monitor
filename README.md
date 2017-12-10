@@ -10,26 +10,51 @@ This extension uses the GitHub api to monitor the state of your pull requests an
 
 Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor
 
-
 ## Features
 
 - Monitor all the pull requests for your account
-
 - Monitor a specific repository (and quickly switch between them)
-
 - Quickly open GitHub pull requests from VS Code
-
 - Colors and icons to identify pull requests that require attention
 
-**Green**: there are no conflicts, tests are passing (if any), reviews are approved (if any requested)
+### Colors
+![color green](images/color-green.png) **Green**: there are no conflicts, build is passing (if any), reviews are approved (if any)
 
-**Red**: opposite of green
+![color red](images/color-red.png) **Red**: opposite of green or pull request closed
 
-**White**: waiting for status
+![color white](images/color-white.png) **White**: waiting for status
 
-#### Missing features
+![color violet](images/color-violet.png) **Violet**: merged
 
-- detect outdated branches
+### Icons
+Note: white icons can become green or red depending on the pull request state.
+#### State
+
+![icon](images/icon-state-open.png) Open
+
+![icon](images/icon-state-merged.png) Merged
+
+![icon](images/icon-state-closed.png) Closed
+
+#### Build
+
+![icon](images/icon-build-ok.png) Build passes
+
+![icon](images/icon-build-ko.png) Build fails
+
+#### Branch
+![icon](images/icon-mergeable-ok.png) Mergeable
+
+![icon](images/icon-mergeable-ko.png) Conflicts
+
+![icon](images/icon-mergeable-unknown.png) Unknown mergeable state
+
+#### Reviews
+![icon](images/icon-reviews-ok.png) Approved reviews
+
+![icon](images/icon-reviews-ko.png) Changes requested
+
+![icon](images/icon-reviews-comments.png) There are comments
 
 ## Instructions
 
@@ -69,6 +94,7 @@ Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor
 
 - `pullRequestMonitor.showClosed` `boolean`, show or hide closed pull requests
 
+### Default configuration
 ```json
 {
     "pullRequestMonitor.refreshInterval": 60,
