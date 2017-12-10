@@ -1,5 +1,8 @@
 # Change Log
 
+## v1.3.1
+- Update readme with icons
+
 ## v1.3.0
 - Add configuration for refresh interval and to show/hide closed/merged pull requests
 - Major code cleanup
