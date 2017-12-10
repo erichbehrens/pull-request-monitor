@@ -63,15 +63,18 @@
         "lint": "eslint src"
     },
     "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
-        "eslint": "^4.6.1",
-        "jest": "^21.2.1",
+        "@types/mocha": "^2.2.42",
         "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
+        "eslint": "^4.6.1",
+        "eslint-config-airbnb": "^16.1.0",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-import": "^2.8.0",
+        "jest": "^21.2.1",
+        "typescript": "^2.6.1"
     },
     "dependencies": {
-        "isomorphic-fetch": "^2.2.1"
+        "isomorphic-fetch": "^2.2.1",
+        "vscode": "^1.1.6"
     },
     "repository": {
         "type": "git",

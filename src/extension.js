@@ -1,4 +1,4 @@
-const vscode = require('vscode');
+const vscode = require('vscode'); // eslint-disable-line import/no-unresolved
 const { clearTimeout, setTimeout } = require('timers');
 const { getCommitIcon, getColor, getMergeableIcon, getMergeableState, getPullRequestStateIcon, getReviewState } = require('./utils');
 const { loadPullRequests, loadRepositories } = require('./requests');
@@ -20,7 +20,7 @@ function createStatusBarItem(context, prId, url) {
 	});
 	context.subscriptions.push(disposable);
 	statusBarItems[prId] = statusBarItem;
-};
+}
 
 async function getPullRequests(context) {
 	try {
@@ -55,8 +55,6 @@ async function getPullRequests(context) {
 				hasComments && '$(comment)',
 				hasPendingChangeRequests && '$(thumbsdown)',
 				isApproved && '$(thumbsup)',
-				!closed && pr.potentialCommit && pr.potentialCommit.status,
-				!closed && pr.potentialCommit && pr.potentialCommit.status && pr.potentialCommit.status.state,
 			];
 			statusBarItem.text = text.filter(item => item).join(' ');
 			statusBarItem.color = getColor(mergeableState);
@@ -69,13 +67,16 @@ async function getPullRequests(context) {
 		console.error(e); // eslint-disable-line no-console
 		vscode.window.showErrorMessage('Pull Request Monitor error rendering');
 	}
-	// users store intervals in seconds. We convert it to ms and prevent them to set a value lower than 15s
-	let refreshInterval = Math.max(context.globalState.get('refreshInterval', 60) * 1000, 15000);
+	// users store intervals in seconds
+	// we convert it to ms and prevent them to set a value lower than 15s
+	const refreshInterval = Math.max(context.globalState.get('refreshInterval', 60) * 1000, 15000);
 	timer = setTimeout(() => getPullRequests(context), refreshInterval);
 }
 
 function resetPullRequests(context) {
-	statusBarItems && Object.keys(statusBarItems).forEach(item => statusBarItems[item].hide());
+	if (statusBarItems) {
+		Object.keys(statusBarItems).forEach(item => statusBarItems[item].hide());
+	}
 	clearTimeout(timer);
 	getPullRequests(context);
 }
@@ -158,7 +159,7 @@ function activate(context) {
 		if (token) {
 			context.globalState.update('token', token);
 			resetPullRequests(context);
-			vscode.window.showInformationMessage(`Token saved.`);
+			vscode.window.showInformationMessage('Token saved.');
 		}
 	});
 

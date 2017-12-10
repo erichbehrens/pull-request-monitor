@@ -1,4 +1,4 @@
-const { window } = require('vscode');
+const { window } = require('vscode'); // eslint-disable-line import/no-unresolved
 const fetch = require('isomorphic-fetch');
 const queries = require('./queries');
 const { getStatesFilter } = require('./utils');
