@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.3.0
+- Add configuration for refresh interval and to show/hide closed/merged pull requests
+- Major code cleanup
+
 ## v1.2.0
 - Changed name to *GitHub Pull Request Monitor*
 - Use more distinguishable icons for failing tests and conflicts
