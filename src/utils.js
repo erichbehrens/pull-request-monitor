@@ -61,10 +61,10 @@ exports.getStatesFilter = (showMerged, showClosed) => {
 };
 
 function getReviewsByAuthor(reviews) {
-	return reviews.reduce((ret, { node }) => {
-		ret[node.author.login] = ret[node.author.login] || [];
-		ret[node.author.login].push(node);
-		return ret;
+	return reviews.reduce((acc, { node }) => {
+		acc[node.author.login] = acc[node.author.login] || [];
+		acc[node.author.login].push(node);
+		return acc;
 	}, {});
 }
 
@@ -78,7 +78,7 @@ function getLastStateByAuthor(reviewsByAuthor) {
 	}).filter(item => item);
 }
 
-exports.getReviewState = reviews => {
+exports.getReviewState = (reviews) => {
 	const reviewsCount = reviews.edges.length;
 	let hasPendingChangeRequests;
 	let isApproved;

@@ -1,36 +1,36 @@
 const { getReviewState, getReviewsByAuthor, getLastStateByAuthor } = require('../utils');
 
-const reviews = [
-	{node: {author: {login: 'alice'}, state: 'COMMENTED'}},
-	{node: {author: {login: 'jane'}, state: 'COMMENTED'}},
-	{node: {author: {login: 'john'}, state: 'APPROVED'}},
-	{node: {author: {login: 'jane'}, state: 'APPROVED'}},
-	{node: {author: {login: 'marc'}, state: 'CHANGES_REQUESTED'}},
+const TEST_REVIEWS = [
+	{ node: { author: { login: 'alice' }, state: 'COMMENTED' } },
+	{ node: { author: { login: 'jane' }, state: 'COMMENTED' } },
+	{ node: { author: { login: 'john' }, state: 'APPROVED' } },
+	{ node: { author: { login: 'jane' }, state: 'APPROVED' } },
+	{ node: { author: { login: 'marc' }, state: 'CHANGES_REQUESTED' } },
 ];
 
 test('getReviewsByAuthor', () => {
 	const expected = {
 		alice: [
-			{author: {login: 'alice'}, state: 'COMMENTED'},
+			{ author: { login: 'alice' }, state: 'COMMENTED' },
 		],
 		john: [
-			{author: {login: 'john'}, state: 'APPROVED'},
+			{ author: { login: 'john' }, state: 'APPROVED' },
 		],
 		jane: [
-			{author: {login: 'jane'}, state: 'COMMENTED'},
-			{author: {login: 'jane'}, state: 'APPROVED'},
+			{ author: { login: 'jane' }, state: 'COMMENTED' },
+			{ author: { login: 'jane' }, state: 'APPROVED' },
 		],
 		marc: [
-			{author: {login: 'marc'}, state: 'CHANGES_REQUESTED'},
+			{ author: { login: 'marc' }, state: 'CHANGES_REQUESTED' },
 		],
 	};
-	const actual = getReviewsByAuthor(reviews);
+	const actual = getReviewsByAuthor(TEST_REVIEWS);
 	expect(actual).toEqual(expected);
 });
 
 test('getLastStateByAuthor', () => {
 	const expected = ['APPROVED', 'APPROVED', 'CHANGES_REQUESTED'];
-	const reviewsByAuthor = getReviewsByAuthor(reviews);
+	const reviewsByAuthor = getReviewsByAuthor(TEST_REVIEWS);
 	const actual = getLastStateByAuthor(reviewsByAuthor);
 	expect(actual).toEqual(expected);
 });
@@ -43,7 +43,7 @@ test('getReviewState - without reviews', () => {
 		hasPendingChangeRequests: undefined,
 		reviewsPassing: true,
 	};
-	const actual = getReviewState({edges: reviews });
+	const actual = getReviewState({ edges: reviews });
 	expect(actual).toEqual(expected);
 });
 
@@ -54,18 +54,18 @@ test('getReviewState - with changes requested', () => {
 		hasPendingChangeRequests: true,
 		reviewsPassing: false,
 	};
-	const actual = getReviewState({edges: reviews });
+	const actual = getReviewState({ edges: TEST_REVIEWS });
 	expect(actual).toEqual(expected);
 });
 
 test('getReviewState - approved', () => {
 	const reviews = [
-		{node: {author: {login: 'alice'}, state: 'COMMENTED'}},
-		{node: {author: {login: 'jane'}, state: 'COMMENTED'}},
-		{node: {author: {login: 'john'}, state: 'APPROVED'}},
-		{node: {author: {login: 'jane'}, state: 'APPROVED'}},
-		{node: {author: {login: 'marc'}, state: 'CHANGES_REQUESTED'}},
-		{node: {author: {login: 'marc'}, state: 'APPROVED'}},
+		{ node: { author: { login: 'alice' }, state: 'COMMENTED' } },
+		{ node: { author: { login: 'jane' }, state: 'COMMENTED' } },
+		{ node: { author: { login: 'john' }, state: 'APPROVED' } },
+		{ node: { author: { login: 'jane' }, state: 'APPROVED' } },
+		{ node: { author: { login: 'marc' }, state: 'CHANGES_REQUESTED' } },
+		{ node: { author: { login: 'marc' }, state: 'APPROVED' } },
 	];
 	const expected = {
 		hasComments: true,
@@ -73,16 +73,16 @@ test('getReviewState - approved', () => {
 		hasPendingChangeRequests: false,
 		reviewsPassing: true,
 	};
-	const actual = getReviewState({edges: reviews });
+	const actual = getReviewState({ edges: reviews });
 	expect(actual).toEqual(expected);
 });
 
 test('getReviewState - without comments', () => {
 	const reviews = [
-		{node: {author: {login: 'john'}, state: 'APPROVED'}},
-		{node: {author: {login: 'jane'}, state: 'APPROVED'}},
-		{node: {author: {login: 'marc'}, state: 'CHANGES_REQUESTED'}},
-		{node: {author: {login: 'marc'}, state: 'APPROVED'}},
+		{ node: { author: { login: 'john' }, state: 'APPROVED' } },
+		{ node: { author: { login: 'jane' }, state: 'APPROVED' } },
+		{ node: { author: { login: 'marc' }, state: 'CHANGES_REQUESTED' } },
+		{ node: { author: { login: 'marc' }, state: 'APPROVED' } },
 	];
 	const expected = {
 		hasComments: false,
@@ -90,16 +90,16 @@ test('getReviewState - without comments', () => {
 		hasPendingChangeRequests: false,
 		reviewsPassing: true,
 	};
-	const actual = getReviewState({edges: reviews });
+	const actual = getReviewState({ edges: reviews });
 	expect(actual).toEqual(expected);
 });
 
 test('getReviewState - with comments only', () => {
 	const reviews = [
-		{node: {author: {login: 'john'}, state: 'COMMENTED'}},
-		{node: {author: {login: 'jane'}, state: 'COMMENTED'}},
-		{node: {author: {login: 'marc'}, state: 'COMMENTED'}},
-		{node: {author: {login: 'marc'}, state: 'COMMENTED'}},
+		{ node: { author: { login: 'john' }, state: 'COMMENTED' } },
+		{ node: { author: { login: 'jane' }, state: 'COMMENTED' } },
+		{ node: { author: { login: 'marc' }, state: 'COMMENTED' } },
+		{ node: { author: { login: 'marc' }, state: 'COMMENTED' } },
 	];
 	const expected = {
 		hasComments: true,
@@ -107,6 +107,6 @@ test('getReviewState - with comments only', () => {
 		hasPendingChangeRequests: undefined,
 		reviewsPassing: true,
 	};
-	const actual = getReviewState({edges: reviews });
+	const actual = getReviewState({ edges: reviews });
 	expect(actual).toEqual(expected);
 });

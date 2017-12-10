@@ -13,18 +13,17 @@
         "ecmaVersion": 2017,
         "sourceType": "module"
     },
+    "extends": "airbnb-base",
     "rules": {
+        "no-tabs":"off",
         "indent": ["error", "tab", { "SwitchCase": 1 }],
-        "no-const-assign": "error",
-        "no-undef": "error",
-        "no-unreachable": "warn",
-        "no-unused-vars": "error",
-        "valid-typeof": "warn",
-        "space-before-function-paren": ["error", {"named": "never", "asyncArrow": "always"}],
-        "space-in-parens": ["error", "never"],
-        "no-console": "error",
-        "semi": "error",
-        "comma-style": ["error", "last"],
-        "comma-dangle": ["error", "always-multiline"]
+        "no-console": "error", // airbnb = warn
+        "object-curly-newline":"off", // airbnb = min 4
+        "consistent-return": "off",
+        "import/order": ["off", {
+            "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+            "newlines-between": "never"
+        }],
+        "default-case": "off"
     }
 }
