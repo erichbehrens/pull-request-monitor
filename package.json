@@ -55,6 +55,29 @@
                 "command": "PullRequestMonitor.setToken",
                 "title": "PR Monitor: Set GitHub token"
             }
+        ],
+        "configuration": [
+            {
+                "title": "GitHub Pull Request Monitor",
+                "type": "object",
+                "properties": {
+                    "pullRequestMonitor.refreshInterval": {
+                        "description": "Refresh interval in seconds (min. 15)",
+                        "type": "number",
+                        "default": 60
+                    },
+                    "pullRequestMonitor.showMerged": {
+                        "description": "Show merged pull requests",
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "pullRequestMonitor.showClosed": {
+                        "description": "Show closed pull requests",
+                        "type": "boolean",
+                        "default": false
+                    }
+                }
+            }
         ]
     },
     "scripts": {

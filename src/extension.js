@@ -23,17 +23,22 @@ function createStatusBarItem(context, prId, url) {
 }
 
 async function getPullRequests(context) {
+	clearTimeout(timer);
 	try {
 		const mode = context.globalState.get('mode', MODES.VIEWER);
 		const repository = context.globalState.get('currentRepository');
-		const showMerged = context.globalState.get('showMerged', false);
-		const showClosed = context.globalState.get('showClosed', false);
+		const showMerged = vscode.workspace.getConfiguration('pullRequestMonitor').get('showMerged');
+		const showClosed = vscode.workspace.getConfiguration('pullRequestMonitor').get('showClosed');
 		const pullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository });
+		if (!statusBarItems) {
+			statusBarItems = {};
+		} else {
+			const prIds = pullRequests.map(pr => `${pr.repository.name}${pr.number}`);
+			Object.keys(statusBarItems)
+				.forEach(item => !prIds.includes(item) && statusBarItems[item].hide());
+		}
 		pullRequests.forEach((pr) => {
 			const prId = `${pr.repository.name}${pr.number}`;
-			if (!statusBarItems) {
-				statusBarItems = {};
-			}
 			if (!statusBarItems[prId]) {
 				createStatusBarItem(context, prId, pr.url);
 			}
@@ -67,18 +72,11 @@ async function getPullRequests(context) {
 		console.error(e); // eslint-disable-line no-console
 		vscode.window.showErrorMessage('Pull Request Monitor error rendering');
 	}
-	// users store intervals in seconds
-	// we convert it to ms and prevent them to set a value lower than 15s
-	const refreshInterval = Math.max(context.globalState.get('refreshInterval', 60) * 1000, 15000);
-	timer = setTimeout(() => getPullRequests(context), refreshInterval);
-}
-
-function resetPullRequests(context) {
-	if (statusBarItems) {
-		Object.keys(statusBarItems).forEach(item => statusBarItems[item].hide());
-	}
-	clearTimeout(timer);
-	getPullRequests(context);
+	// we store the interval in seconds and prevent the users to set a value lower than 15s
+	const userRefreshInterval = Number.parseInt(vscode.workspace.getConfiguration('pullRequestMonitor').get('refreshInterval'), 10);
+	const refreshInterval = userRefreshInterval >= 15 ? userRefreshInterval : 60;
+	if (!refreshInterval) return;
+	timer = setTimeout(() => getPullRequests(context), refreshInterval * 1000);
 }
 
 function setRepository(context, nameWithOwner) {
@@ -90,7 +88,7 @@ function setRepository(context, nameWithOwner) {
 			name: nameWithOwner.split('/')[1],
 		});
 		context.globalState.update('mode', MODES.REPOSITORY);
-		resetPullRequests(context);
+		getPullRequests(context);
 	}
 }
 
@@ -117,7 +115,6 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.refresh', () => {
-		clearTimeout(timer);
 		getPullRequests(context);
 		vscode.window.showInformationMessage('Pull Request Monitor refreshing');
 	});
@@ -132,7 +129,7 @@ function activate(context) {
 				return;
 			}
 			context.globalState.update('mode', selectedMode);
-			resetPullRequests(context);
+			getPullRequests(context);
 		}
 	});
 
@@ -158,7 +155,7 @@ function activate(context) {
 		const token = await vscode.window.showInputBox({ placeHolder: 'Please enter your GitHGub token' });
 		if (token) {
 			context.globalState.update('token', token);
-			resetPullRequests(context);
+			getPullRequests(context);
 			vscode.window.showInformationMessage('Token saved.');
 		}
 	});

@@ -8,7 +8,7 @@ This extension uses the GitHub api to monitor the state of your pull requests an
 
 ![Statusbar items](images/statusBarItems.png)
 
-Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor/
+Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor
 
 
 ## Features
@@ -45,7 +45,6 @@ Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor/
 
 - Paste your token, the extension will start monitoring your pull requests
 
-
 ## Extension Commands
 
 - `PullRequestMonitor.setToken`: set the GitHub token
@@ -62,6 +61,21 @@ Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor/
 
 - `PullRequestMonitor.enterRepositoryName`: set the private repository name you want to monitor. Something like `your-team-nam/awesome-project`
 
+## Extension configuration
+
+- `pullRequestMonitor.refreshInterval`: `number` default = `60`, refresh interval in seconds (min `15`s)
+
+- `pullRequestMonitor.showMerged`: `boolean` default = `false`, show or hide merged pull requests
+
+- `pullRequestMonitor.showClosed` `boolean`, show or hide closed pull requests
+
+```json
+{
+    "pullRequestMonitor.refreshInterval": 60,
+    "pullRequestMonitor.showClosed": false,
+    "pullRequestMonitor.showMerged": false,
+}
+```
 ## Known Issues
 
 Please report any bugs here: https://github.com/erichbehrens/pull-request-monitor/issues
