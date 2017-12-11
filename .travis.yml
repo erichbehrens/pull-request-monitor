@@ -5,7 +5,7 @@ node_js:
 sudo: false
 
 os:
-  - osx
+  # - osx # build never ends?
   - linux
 
 before_install:
