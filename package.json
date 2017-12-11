@@ -18,11 +18,12 @@
         "Other"
     ],
     "activationEvents": [
+        "*",
         "onCommand:PullRequestMonitor.setToken",
         "onCommand:PullRequestMonitor.start",
         "onCommand:PullRequestMonitor.setMode",
         "onCommand:PullRequestMonitor.selectRepository",
-        "onCommand:PullRequestMonitor.setRepository"
+        "onCommand:PullRequestMonitor.enterRepositoryName"
     ],
     "main": "./src/extension",
     "contributes": {
@@ -82,18 +83,14 @@
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "jest",
-        "lint": "eslint src"
+        "test": "node ./node_modules/vscode/bin/test",
+        "lint": "eslint src test"
     },
     "devDependencies": {
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^7.0.43",
         "eslint": "^4.6.1",
         "eslint-config-airbnb": "^16.1.0",
         "eslint-config-airbnb-base": "^12.1.0",
-        "eslint-plugin-import": "^2.8.0",
-        "jest": "^21.2.1",
-        "typescript": "^2.6.1"
+        "eslint-plugin-import": "^2.8.0"
     },
     "dependencies": {
         "isomorphic-fetch": "^2.2.1",
