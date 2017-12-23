@@ -1,5 +1,8 @@
 # Change Log
 
+## v1.4.0
+- Autostart extension with VS Code
+
 ## v1.3.1
 - Update readme with icons
 

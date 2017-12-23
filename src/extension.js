@@ -100,9 +100,10 @@ function activate(context) {
 	statusBarItem.show();
 	context.subscriptions.push(statusBarItem);
 
-	let disposable = vscode.commands.registerCommand('PullRequestMonitor.start', () => {
+	let disposable = vscode.commands.registerCommand('PullRequestMonitor.start', (options = {}) => {
+		const { silent } = options;
 		getPullRequests(context);
-		vscode.window.showInformationMessage('Pull Request Monitor started!');
+		if (!silent) vscode.window.showInformationMessage('Pull Request Monitor started!');
 	});
 
 	context.subscriptions.push(disposable);
@@ -161,6 +162,10 @@ function activate(context) {
 	});
 
 	context.subscriptions.push(disposable);
+
+	if (vscode.workspace.getConfiguration('pullRequestMonitor').get('autostart') && context.globalState.get('token')) {
+		vscode.commands.executeCommand('PullRequestMonitor.start', { silent: true });
+	}
 }
 exports.activate = activate;
 
