@@ -94,12 +94,15 @@ Note: white icons can become green or red depending on the pull request state.
 
 - `pullRequestMonitor.showClosed` `boolean`, show or hide closed pull requests
 
+- `pullRequestMonitor.autostart` `boolean`, automatically start the extension
+
 ### Default configuration
 ```json
 {
     "pullRequestMonitor.refreshInterval": 60,
     "pullRequestMonitor.showClosed": false,
     "pullRequestMonitor.showMerged": false,
+    "pullRequestMonitor.autostart": true,
 }
 ```
 ## Known Issues

@@ -3,7 +3,7 @@
     "displayName": "GitHub Pull Request Monitor",
     "description": "Monitors the status of GitHub pull requests. Checks for conflicts, status reports, reviews and whether the branch is  up to date.",
     "icon": "icon.png",
-    "version": "1.3.1",
+    "version": "1.4.0",
     "publisher": "erichbehrens",
     "author": "Erich Behrens <me@eb1.it>",
     "license": "MIT",
@@ -76,6 +76,11 @@
                         "description": "Show closed pull requests",
                         "type": "boolean",
                         "default": false
+                    },
+                    "pullRequestMonitor.autostart": {
+                        "description": "Automatically start the extension with VS Code",
+                        "type": "boolean",
+                        "default": true
                     }
                 }
             }
