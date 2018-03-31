@@ -1,8 +1,8 @@
 # GitHub Pull Request Monitor
+
 [![Travis](https://img.shields.io/travis/erichbehrens/pull-request-monitor.svg)](https://travis-ci.org/erichbehrens/pull-request-monitor)
 [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/erichbehrens.pull-request-monitor.svg)](https://marketplace.visualstudio.com/items?itemName=erichbehrens.pull-request-monitor)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/erichbehrens.pull-request-monitor.svg)](https://marketplace.visualstudio.com/items?itemName=erichbehrens.pull-request-monitor)
-
 
 This extension uses the GitHub api to monitor the state of your pull requests and let you know when it's time to merge or if someone requested changes.
 
@@ -18,6 +18,7 @@ Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor
 - Colors and icons to identify pull requests that require attention
 
 ### Colors
+
 ![color green](images/color-green.png) **Green**: there are no conflicts, build is passing (if any), reviews are approved (if any)
 
 ![color red](images/color-red.png) **Red**: opposite of green or pull request closed
@@ -27,7 +28,9 @@ Source code on GitHub: https://github.com/erichbehrens/pull-request-monitor
 ![color violet](images/color-violet.png) **Violet**: merged
 
 ### Icons
+
 Note: white icons can become green or red depending on the pull request state.
+
 #### State
 
 ![icon](images/icon-state-open.png) Open
@@ -43,6 +46,7 @@ Note: white icons can become green or red depending on the pull request state.
 ![icon](images/icon-build-ko.png) Build fails
 
 #### Branch
+
 ![icon](images/icon-mergeable-ok.png) Mergeable
 
 ![icon](images/icon-mergeable-ko.png) Conflicts
@@ -50,6 +54,7 @@ Note: white icons can become green or red depending on the pull request state.
 ![icon](images/icon-mergeable-unknown.png) Unknown mergeable state
 
 #### Reviews
+
 ![icon](images/icon-reviews-ok.png) Approved reviews
 
 ![icon](images/icon-reviews-ko.png) Changes requested
@@ -84,7 +89,7 @@ Note: white icons can become green or red depending on the pull request state.
 
 - `PullRequestMonitor.selectRepository`: select the repository to monitor through the list of your repositories (some private repositories will not appear here, in this case use `PullRequestMonitor.enterRepositoryName` )
 
-- `PullRequestMonitor.enterRepositoryName`: set the private repository name you want to monitor. Something like `your-team-nam/awesome-project`
+- `PullRequestMonitor.enterRepositoryName`: set the private repository name you want to monitor. Something like `your-team-name/awesome-project`
 
 ## Extension configuration
 
@@ -97,6 +102,7 @@ Note: white icons can become green or red depending on the pull request state.
 - `pullRequestMonitor.autostart` `boolean`, automatically start the extension
 
 ### Default configuration
+
 ```json
 {
     "pullRequestMonitor.refreshInterval": 60,
@@ -105,10 +111,3 @@ Note: white icons can become green or red depending on the pull request state.
     "pullRequestMonitor.autostart": true,
 }
 ```
-## Known Issues
-
-Please report any bugs here: https://github.com/erichbehrens/pull-request-monitor/issues
-
-
-
-

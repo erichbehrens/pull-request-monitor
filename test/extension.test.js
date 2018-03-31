@@ -17,6 +17,7 @@ suite('Extension Tests', () => {
 		'PullRequestMonitor.start',
 		'PullRequestMonitor.stop',
 		'PullRequestMonitor.refresh',
+		'PullRequestMonitor.refresh.showError',
 		'PullRequestMonitor.setMode',
 		'PullRequestMonitor.selectRepository',
 		'PullRequestMonitor.enterRepositoryName',
