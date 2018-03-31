@@ -22,14 +22,29 @@ function createStatusBarItem(context, prId, url) {
 	statusBarItems[prId] = statusBarItem;
 }
 
-async function getPullRequests(context) {
+let pullRequests = [];
+let refreshButton;
+
+async function getPullRequests(context, showError) {
 	clearTimeout(timer);
+	let overrideRefreshInterval;
 	try {
 		const mode = context.globalState.get('mode', MODES.VIEWER);
 		const repository = context.globalState.get('currentRepository');
 		const showMerged = vscode.workspace.getConfiguration('pullRequestMonitor').get('showMerged');
 		const showClosed = vscode.workspace.getConfiguration('pullRequestMonitor').get('showClosed');
-		const pullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository });
+		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError });
+		if (!updatedPullRequests) {
+			refreshButton.command = 'PullRequestMonitor.refresh.showError';
+			refreshButton.text = '$(zap)';
+			refreshButton.tooltip = 'Connect Pull Request Monitor';
+			overrideRefreshInterval = 15;
+		} else {
+			refreshButton.command = 'PullRequestMonitor.refresh';
+			refreshButton.text = '$(sync)';
+			refreshButton.tooltip = 'Refresh Pull Request Monitor';
+			pullRequests = updatedPullRequests;
+		}
 		if (!statusBarItems) {
 			statusBarItems = {};
 		} else {
@@ -73,7 +88,7 @@ async function getPullRequests(context) {
 		vscode.window.showErrorMessage('Pull Request Monitor error rendering');
 	}
 	// we store the interval in seconds and prevent the users to set a value lower than 15s
-	const userRefreshInterval = Number.parseInt(vscode.workspace.getConfiguration('pullRequestMonitor').get('refreshInterval'), 10);
+	const userRefreshInterval = overrideRefreshInterval || Number.parseInt(vscode.workspace.getConfiguration('pullRequestMonitor').get('refreshInterval'), 10);
 	const refreshInterval = userRefreshInterval >= 15 ? userRefreshInterval : 60;
 	if (!refreshInterval) return;
 	timer = setTimeout(() => getPullRequests(context), refreshInterval * 1000);
@@ -93,12 +108,12 @@ function setRepository(context, nameWithOwner) {
 }
 
 function activate(context) {
-	const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-	statusBarItem.command = 'PullRequestMonitor.refresh';
-	statusBarItem.text = '$(sync)';
-	statusBarItem.tooltip = 'Refresh Pull Request Monitor';
-	statusBarItem.show();
-	context.subscriptions.push(statusBarItem);
+	refreshButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+	refreshButton.command = 'PullRequestMonitor.refresh';
+	refreshButton.text = '$(sync)';
+	refreshButton.tooltip = 'Refresh Pull Request Monitor';
+	refreshButton.show();
+	context.subscriptions.push(refreshButton);
 
 	let disposable = vscode.commands.registerCommand('PullRequestMonitor.start', (options = {}) => {
 		const { silent } = options;
@@ -117,6 +132,13 @@ function activate(context) {
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.refresh', () => {
 		getPullRequests(context);
+		vscode.window.showInformationMessage('Pull Request Monitor refreshing');
+	});
+
+	context.subscriptions.push(disposable);
+
+	disposable = vscode.commands.registerCommand('PullRequestMonitor.refresh.showError', () => {
+		getPullRequests(context, true);
 		vscode.window.showInformationMessage('Pull Request Monitor refreshing');
 	});
 
