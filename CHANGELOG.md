@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.5.2
+
+- Bugfix
+
 ## v1.5.1
 
 - Improved network and auth error handling
