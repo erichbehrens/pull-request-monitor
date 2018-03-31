@@ -34,7 +34,12 @@ async function getPullRequests(context, showError) {
 		const showMerged = vscode.workspace.getConfiguration('pullRequestMonitor').get('showMerged');
 		const showClosed = vscode.workspace.getConfiguration('pullRequestMonitor').get('showClosed');
 		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError });
-		if (!updatedPullRequests) {
+		if (updatedPullRequests.code === 401) {
+			refreshButton.command = 'PullRequestMonitor.setToken';
+			refreshButton.text = '$(key)';
+			refreshButton.tooltip = 'Set GitHub token for Pull Request Monitor';
+			return;
+		} else if (updatedPullRequests.status === 'error') {
 			refreshButton.command = 'PullRequestMonitor.refresh.showError';
 			refreshButton.text = '$(zap)';
 			refreshButton.tooltip = 'Connect Pull Request Monitor';
@@ -43,7 +48,7 @@ async function getPullRequests(context, showError) {
 			refreshButton.command = 'PullRequestMonitor.refresh';
 			refreshButton.text = '$(sync)';
 			refreshButton.tooltip = 'Refresh Pull Request Monitor';
-			pullRequests = updatedPullRequests;
+			pullRequests = updatedPullRequests.data;
 		}
 		if (!statusBarItems) {
 			statusBarItems = {};

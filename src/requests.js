@@ -19,8 +19,14 @@ async function execQuery(token, query, showError) {
 			headers: { Authorization: `bearer ${token}` },
 			body: JSON.stringify({ query }),
 		});
-		const { data } = await res.json();
-		return data;
+		if (res.status === 200) {
+			const { data } = await res.json();
+			return { status: 'ok', data };
+		}
+		if (res.status === 401 || res.status === 403) {
+			window.showErrorMessage('Pull Request Monitor token not authorized');
+			return { status: 'error', code: 401 };
+		}
 	} catch (e) {
 		console.error(e); // eslint-disable-line no-console
 		if (!showError) {
@@ -29,6 +35,7 @@ async function execQuery(token, query, showError) {
 		if (showError || errorCount === 2) {
 			window.showErrorMessage('Pull Request Monitor error fetching data');
 		}
+		return { status: 'error' };
 	}
 }
 
@@ -38,13 +45,13 @@ exports.loadPullRequests =
 		if (mode === 'repository') {
 			if (!repository) {
 				window.showWarningMessage('Pull Request Monitor needs a repository to watch');
-				return;
+				return { status: 'error' };
 			}
 			query = query.replace('@owner', repository.owner).replace('@name', repository.name);
 		}
-		const data = await execQuery(token, query, showError);
+		const { status, code, data } = await execQuery(token, query, showError);
 		const pullRequests = data && data[mode].pullRequests.nodes;
-		return pullRequests;
+		return { status, code, data: pullRequests };
 	};
 
 exports.loadRepositories = async (token) => {
