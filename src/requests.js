@@ -55,7 +55,7 @@ exports.loadPullRequests =
 	};
 
 exports.loadRepositories = async (token) => {
-	const data = await execQuery(token, queries.repositories);
-	const repositories = data.viewer.repositories.nodes;
-	return repositories;
+	const { status, code, data } = await execQuery(token, queries.repositories);
+	const repositories = data && data.viewer.repositories.nodes;
+	return { status, code, data: repositories };
 };

@@ -164,7 +164,10 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.selectRepository', async () => {
-		const repositories = await loadRepositories(context.globalState.get('token'));
+		const { data: repositories } = await loadRepositories(context.globalState.get('token'));
+		if (!repositories) {
+			return;
+		}
 		const repositoryNames = repositories.map(repository => repository.nameWithOwner);
 		const selectedRepository = await vscode.window.showQuickPick(repositoryNames, { placeHolder: 'Please select the repository' });
 		setRepository(context, selectedRepository);
