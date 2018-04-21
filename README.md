@@ -1,5 +1,7 @@
 # GitHub Pull Request Monitor
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/erichbehrens/pull-request-monitor.svg)](https://greenkeeper.io/)
+
 [![Travis](https://img.shields.io/travis/erichbehrens/pull-request-monitor.svg)](https://travis-ci.org/erichbehrens/pull-request-monitor)
 [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/erichbehrens.pull-request-monitor.svg)](https://marketplace.visualstudio.com/items?itemName=erichbehrens.pull-request-monitor)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/erichbehrens.pull-request-monitor.svg)](https://marketplace.visualstudio.com/items?itemName=erichbehrens.pull-request-monitor)
