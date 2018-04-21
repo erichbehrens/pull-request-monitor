@@ -1,5 +1,10 @@
 # Change Log
 
+## v1.5.3
+
+- Bugfix for repositories without tests
+- Updated extension icon
+
 ## v1.5.2
 
 - Bugfix
