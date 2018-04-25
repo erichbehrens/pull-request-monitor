@@ -1,5 +1,10 @@
 # Change Log
 
+## v1.6.0
+
+- Added setting for number of pull request to show
+- Show message when there are no PRs
+
 ## v1.5.3
 
 - Bugfix for repositories without tests
