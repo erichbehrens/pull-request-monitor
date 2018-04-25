@@ -81,6 +81,11 @@
                         "description": "Automatically start the extension with VS Code",
                         "type": "boolean",
                         "default": true
+                    },
+                    "pullRequestMonitor.count": {
+                        "description": "Number of pull requests to show",
+                        "type": "number",
+                        "default": 6
                     }
                 }
             }

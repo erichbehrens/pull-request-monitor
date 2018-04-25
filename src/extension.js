@@ -33,7 +33,8 @@ async function getPullRequests(context, showError) {
 		const repository = context.globalState.get('currentRepository');
 		const showMerged = vscode.workspace.getConfiguration('pullRequestMonitor').get('showMerged');
 		const showClosed = vscode.workspace.getConfiguration('pullRequestMonitor').get('showClosed');
-		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError });
+		const count = vscode.workspace.getConfiguration('pullRequestMonitor').get('count');
+		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError, count });
 		if (updatedPullRequests.code === 401) {
 			refreshButton.command = 'PullRequestMonitor.setToken';
 			refreshButton.text = '$(key)';

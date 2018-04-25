@@ -1,7 +1,7 @@
 exports.viewer = `query {
   viewer {
     login
-      pullRequests(last: 6 @states) {
+      pullRequests(last: @count @states) {
           nodes {
             repository{
               name
@@ -47,7 +47,7 @@ exports.viewer = `query {
 
 exports.repository = `{
   repository(owner: "@owner" name: "@name") {
-    pullRequests(last: 6 @states) {
+    pullRequests(last: @count @states) {
       nodes {
         repository{
           name
