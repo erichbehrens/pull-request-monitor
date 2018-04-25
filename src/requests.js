@@ -40,8 +40,10 @@ async function execQuery(token, query, showError) {
 }
 
 exports.loadPullRequests =
-	async (token, { mode, showMerged, showClosed, repository, showError }) => {
-		let query = queries[mode].replace('@states', getStatesFilter(showMerged, showClosed));
+	async (token, { mode, showMerged, showClosed, repository, showError, count }) => {
+		let query = queries[mode]
+			.replace('@states', getStatesFilter(showMerged, showClosed))
+			.replace('@count', count);
 		if (mode === 'repository') {
 			if (!repository) {
 				window.showWarningMessage('Pull Request Monitor needs a repository to watch');

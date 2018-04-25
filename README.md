@@ -102,6 +102,8 @@ Note: white icons can become green or red depending on the pull request state.
 
 - `pullRequestMonitor.autostart` `boolean`, automatically start the extension
 
+- `pullRequestMonitor.count`: `number` default = `6`, number of pull requests to show
+
 ### Default configuration
 
 ```json
@@ -110,5 +112,6 @@ Note: white icons can become green or red depending on the pull request state.
     "pullRequestMonitor.showClosed": false,
     "pullRequestMonitor.showMerged": false,
     "pullRequestMonitor.autostart": true,
+    "pullRequestMonitor.count": 6,
 }
 ```

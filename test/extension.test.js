@@ -42,6 +42,7 @@ suite('Extension Tests', () => {
 		assert.equal(actualConfig.get('showMerged'), false);
 		assert.equal(actualConfig.get('showClosed'), false);
 		assert.equal(actualConfig.get('refreshInterval'), 60);
+		assert.equal(actualConfig.get('count'), 6);
 		done();
 	});
 });

@@ -24,6 +24,7 @@ function createStatusBarItem(context, prId, url) {
 
 let pullRequests = [];
 let refreshButton;
+let noResultsLabel;
 
 async function getPullRequests(context, showError) {
 	clearTimeout(timer);
@@ -33,7 +34,8 @@ async function getPullRequests(context, showError) {
 		const repository = context.globalState.get('currentRepository');
 		const showMerged = vscode.workspace.getConfiguration('pullRequestMonitor').get('showMerged');
 		const showClosed = vscode.workspace.getConfiguration('pullRequestMonitor').get('showClosed');
-		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError });
+		const count = vscode.workspace.getConfiguration('pullRequestMonitor').get('count');
+		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError, count });
 		if (updatedPullRequests.code === 401) {
 			refreshButton.command = 'PullRequestMonitor.setToken';
 			refreshButton.text = '$(key)';
@@ -56,6 +58,11 @@ async function getPullRequests(context, showError) {
 			const prIds = pullRequests.map(pr => `${pr.repository.name}${pr.number}`);
 			Object.keys(statusBarItems)
 				.forEach(item => !prIds.includes(item) && statusBarItems[item].hide());
+		}
+		if (pullRequests.length === 0) {
+			noResultsLabel.show();
+		} else {
+			noResultsLabel.hide();
 		}
 		pullRequests.forEach((pr) => {
 			const prId = `${pr.repository.name}${pr.number}`;
@@ -113,6 +120,12 @@ function setRepository(context, nameWithOwner) {
 }
 
 function activate(context) {
+	noResultsLabel = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+	noResultsLabel.command = 'PullRequestMonitor.selectRepository';
+	noResultsLabel.text = 'No PRs';
+	noResultsLabel.tooltip = 'Select another repository';
+	context.subscriptions.push(noResultsLabel);
+
 	refreshButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
 	refreshButton.command = 'PullRequestMonitor.refresh';
 	refreshButton.text = '$(sync)';
