@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.6.1
+
+- Security update on vscode dependency
+
 ## v1.6.0
 
 - Added setting for number of pull request to show
