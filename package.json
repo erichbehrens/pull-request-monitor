@@ -3,7 +3,7 @@
     "displayName": "GitHub Pull Request Monitor",
     "description": "Monitors the status of GitHub pull requests. Checks for conflicts, status reports, reviews and whether the branch is  up to date.",
     "icon": "icon.png",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "publisher": "erichbehrens",
     "author": "Erich Behrens <me@eb1.it>",
     "license": "MIT",
@@ -104,7 +104,7 @@
     },
     "dependencies": {
         "isomorphic-fetch": "^2.2.1",
-        "vscode": "^1.1.14"
+        "vscode": "^1.1.17"
     },
     "repository": {
         "type": "git",
