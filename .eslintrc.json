@@ -24,6 +24,7 @@
             "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
             "newlines-between": "never"
         }],
-        "default-case": "off"
+        "default-case": "off",
+        "operator-linebreak": ["error", "after"]
     }
 }

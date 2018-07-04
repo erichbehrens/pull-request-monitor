@@ -41,7 +41,8 @@ async function getPullRequests(context, showError) {
 			refreshButton.text = '$(key)';
 			refreshButton.tooltip = 'Set GitHub token for Pull Request Monitor';
 			return;
-		} else if (updatedPullRequests.status === 'error') {
+		}
+		if (updatedPullRequests.status === 'error') {
 			refreshButton.command = 'PullRequestMonitor.refresh.showError';
 			refreshButton.text = '$(zap)';
 			refreshButton.tooltip = 'Connect Pull Request Monitor';
