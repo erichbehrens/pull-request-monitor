@@ -112,4 +112,3 @@ suite('Utils Tests', () => {
 		assert.deepEqual(actual, expected);
 	});
 });
-
