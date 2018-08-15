@@ -1,11 +1,12 @@
 const { window } = require('vscode'); // eslint-disable-line import/no-unresolved
 const fetch = require('isomorphic-fetch');
+const https = require('https');
 const queries = require('./queries');
 const { getStatesFilter } = require('./utils');
 
 let errorCount = 0;
 
-async function execQuery(token, query, showError) {
+async function execQuery(token, query, showError, graphqlEndpoint = 'https://api.github.com/graphql', allowUnsafeSSL = false) {
 	if (showError) {
 		errorCount = 0;
 	}
@@ -14,10 +15,11 @@ async function execQuery(token, query, showError) {
 		return;
 	}
 	try {
-		const res = await fetch('https://api.github.com/graphql', {
+		const res = await fetch(graphqlEndpoint, {
 			method: 'POST',
 			headers: { Authorization: `bearer ${token}` },
 			body: JSON.stringify({ query }),
+			agent: new https.Agent({ rejectUnauthorized: !allowUnsafeSSL }),
 		});
 		if (res.status === 200) {
 			const { data } = await res.json();
@@ -40,7 +42,9 @@ async function execQuery(token, query, showError) {
 }
 
 exports.loadPullRequests =
-	async (token, { mode, showMerged, showClosed, repository, showError, count }) => {
+	async (token,
+		{ mode, showMerged, showClosed, repository, showError, count, url, allowUnsafeSSL },
+	) => {
 		let query = queries[mode]
 			.replace('@states', getStatesFilter(showMerged, showClosed))
 			.replace('@count', count);
@@ -51,7 +55,7 @@ exports.loadPullRequests =
 			}
 			query = query.replace('@owner', repository.owner).replace('@name', repository.name);
 		}
-		const { status, code, data } = await execQuery(token, query, showError);
+		const { status, code, data } = await execQuery(token, query, showError, url, allowUnsafeSSL);
 		const pullRequests = data && data[mode].pullRequests.nodes;
 		return { status, code, data: pullRequests };
 	};

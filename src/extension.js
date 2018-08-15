@@ -35,7 +35,17 @@ async function getPullRequests(context, showError) {
 		const showMerged = vscode.workspace.getConfiguration('pullRequestMonitor').get('showMerged');
 		const showClosed = vscode.workspace.getConfiguration('pullRequestMonitor').get('showClosed');
 		const count = vscode.workspace.getConfiguration('pullRequestMonitor').get('count');
-		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError, count });
+		// configure the URL settings
+		let url = vscode.workspace.getConfiguration('pullRequestMonitor').get('githubEnterpriseUrl');
+		if (url) url = `${url}/api/graphql`;
+		// configure SSL
+		let allowUnsafeSSL = false;
+		if (vscode.workspace.getConfiguration('PullRequestMonitor').get('allowUnsafeSSL') === null) {
+			allowUnsafeSSL = vscode.workspace.getConfiguration('PullRequestMonitor').get('allowUnsafeSSL');
+		} else {
+			allowUnsafeSSL = !vscode.workspace.getConfiguration('https').get('proxyStrictSSL');
+		}
+		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError, count, url, allowUnsafeSSL });
 		if (updatedPullRequests.code === 401) {
 			refreshButton.command = 'PullRequestMonitor.setToken';
 			refreshButton.text = '$(key)';
