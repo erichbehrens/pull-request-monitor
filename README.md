@@ -104,6 +104,10 @@ Note: white icons can become green or red depending on the pull request state.
 
 - `pullRequestMonitor.count`: `number` default = `6`, number of pull requests to show
 
+- `pullRequestMonitor.githubEnterpriseUrl`: `string` default = `null`, GitHub enterprise url. Leave empty if you don't use GitHub enterprise.
+
+- `pullRequestMonitor.allowUnsafeSSL`: `boolean` default = `false`, allow unsafe certificates for GitHub enterprise
+
 ### Default configuration
 
 ```json
@@ -113,5 +117,7 @@ Note: white icons can become green or red depending on the pull request state.
     "pullRequestMonitor.showMerged": false,
     "pullRequestMonitor.autostart": true,
     "pullRequestMonitor.count": 6,
+    "pullRequestMonitor.githubEnterpriseUrl": null,
+    "pullRequestMonitor.allowUnsafeSSL": false,
 }
 ```

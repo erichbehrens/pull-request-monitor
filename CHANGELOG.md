@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.7.0
+
+- Add support for GitHub enterprise
+
 ## v1.6.1
 
 - Security update on vscode dependency

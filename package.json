@@ -3,7 +3,7 @@
     "displayName": "GitHub Pull Request Monitor",
     "description": "Monitors the status of GitHub pull requests. Checks for conflicts, status reports, reviews and whether the branch is  up to date.",
     "icon": "icon.png",
-    "version": "1.6.1",
+    "version": "1.7.0",
     "publisher": "erichbehrens",
     "author": "Erich Behrens <me@eb1.it>",
     "license": "MIT",
@@ -95,7 +95,7 @@
                     "pullRequestMonitor.allowUnsafeSSL": {
                         "description": "Stop the extension from verifying certs (turn on if you get an error)",
                         "type": "boolean",
-                        "default": null
+                        "default": false
                     }
                 }
             }

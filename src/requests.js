@@ -6,13 +6,17 @@ const { getStatesFilter } = require('./utils');
 
 let errorCount = 0;
 
-async function execQuery(token, query, showError, graphqlEndpoint = 'https://api.github.com/graphql', allowUnsafeSSL = false) {
+async function execQuery(token, query, showError, graphqlEndpoint, allowUnsafeSSL = false) {
+	if (!graphqlEndpoint.startsWith('https://') && showError) {
+		window.showErrorMessage('GitHub enterprise url must start with https://');
+		return { status: 'error' };
+	}
 	if (showError) {
 		errorCount = 0;
 	}
 	if (!token) {
 		window.showWarningMessage('Pull Request Monitor needs a token');
-		return;
+		return { status: 'error' };
 	}
 	try {
 		const res = await fetch(graphqlEndpoint, {
@@ -29,6 +33,8 @@ async function execQuery(token, query, showError, graphqlEndpoint = 'https://api
 			window.showErrorMessage('Pull Request Monitor token not authorized');
 			return { status: 'error', code: 401 };
 		}
+		window.showErrorMessage(`Pull Request Monitor http error ${res.status}`);
+		return { status: 'error', code: res.status };
 	} catch (e) {
 		console.error(e); // eslint-disable-line no-console
 		if (!showError) {
@@ -60,8 +66,9 @@ exports.loadPullRequests =
 		return { status, code, data: pullRequests };
 	};
 
-exports.loadRepositories = async (token) => {
-	const { status, code, data } = await execQuery(token, queries.repositories);
+exports.loadRepositories = async (token, { url, allowUnsafeSSL }) => {
+	const query = queries.repositories;
+	const { status, code, data } = await execQuery(token, query, true, url, allowUnsafeSSL);
 	const repositories = data && data.viewer.repositories.nodes;
 	return { status, code, data: repositories };
 };
