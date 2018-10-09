@@ -3,7 +3,7 @@
     "displayName": "GitHub Pull Request Monitor",
     "description": "Monitors the status of GitHub pull requests. Checks for conflicts, status reports, reviews and whether the branch is  up to date.",
     "icon": "icon.png",
-    "version": "1.6.1",
+    "version": "1.7.0",
     "publisher": "erichbehrens",
     "author": "Erich Behrens <me@eb1.it>",
     "license": "MIT",
@@ -86,6 +86,16 @@
                         "description": "Number of pull requests to show",
                         "type": "number",
                         "default": 6
+                    },
+                    "pullRequestMonitor.githubEnterpriseUrl": {
+                        "description": "The Url to a Github Enterprise",
+                        "type": "string",
+                        "default": null
+                    },
+                    "pullRequestMonitor.allowUnsafeSSL": {
+                        "description": "Stop the extension from verifying certs (turn on if you get an error)",
+                        "type": "boolean",
+                        "default": false
                     }
                 }
             }
@@ -103,6 +113,7 @@
         "eslint-plugin-import": "^2.13.0"
     },
     "dependencies": {
+        "https": "^1.0.0",
         "isomorphic-fetch": "^2.2.1",
         "vscode": "^1.1.18"
     },

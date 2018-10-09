@@ -1,23 +1,29 @@
 const { window } = require('vscode'); // eslint-disable-line import/no-unresolved
 const fetch = require('isomorphic-fetch');
+const https = require('https');
 const queries = require('./queries');
 const { getStatesFilter } = require('./utils');
 
 let errorCount = 0;
 
-async function execQuery(token, query, showError) {
+async function execQuery(token, query, showError, graphqlEndpoint, allowUnsafeSSL = false) {
+	if (!graphqlEndpoint.startsWith('https://') && showError) {
+		window.showErrorMessage('GitHub enterprise url must start with https://');
+		return { status: 'error' };
+	}
 	if (showError) {
 		errorCount = 0;
 	}
 	if (!token) {
 		window.showWarningMessage('Pull Request Monitor needs a token');
-		return;
+		return { status: 'error' };
 	}
 	try {
-		const res = await fetch('https://api.github.com/graphql', {
+		const res = await fetch(graphqlEndpoint, {
 			method: 'POST',
 			headers: { Authorization: `bearer ${token}` },
 			body: JSON.stringify({ query }),
+			agent: new https.Agent({ rejectUnauthorized: !allowUnsafeSSL }),
 		});
 		if (res.status === 200) {
 			const { data } = await res.json();
@@ -27,6 +33,8 @@ async function execQuery(token, query, showError) {
 			window.showErrorMessage('Pull Request Monitor token not authorized');
 			return { status: 'error', code: 401 };
 		}
+		window.showErrorMessage(`Pull Request Monitor http error ${res.status}`);
+		return { status: 'error', code: res.status };
 	} catch (e) {
 		console.error(e); // eslint-disable-line no-console
 		if (!showError) {
@@ -40,7 +48,9 @@ async function execQuery(token, query, showError) {
 }
 
 exports.loadPullRequests =
-	async (token, { mode, showMerged, showClosed, repository, showError, count }) => {
+	async (token,
+		{ mode, showMerged, showClosed, repository, showError, count, url, allowUnsafeSSL },
+	) => {
 		let query = queries[mode]
 			.replace('@states', getStatesFilter(showMerged, showClosed))
 			.replace('@count', count);
@@ -51,13 +61,14 @@ exports.loadPullRequests =
 			}
 			query = query.replace('@owner', repository.owner).replace('@name', repository.name);
 		}
-		const { status, code, data } = await execQuery(token, query, showError);
+		const { status, code, data } = await execQuery(token, query, showError, url, allowUnsafeSSL);
 		const pullRequests = data && data[mode].pullRequests.nodes;
 		return { status, code, data: pullRequests };
 	};
 
-exports.loadRepositories = async (token) => {
-	const { status, code, data } = await execQuery(token, queries.repositories);
+exports.loadRepositories = async (token, { url, allowUnsafeSSL }) => {
+	const query = queries.repositories;
+	const { status, code, data } = await execQuery(token, query, true, url, allowUnsafeSSL);
 	const repositories = data && data.viewer.repositories.nodes;
 	return { status, code, data: repositories };
 };

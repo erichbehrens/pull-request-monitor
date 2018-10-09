@@ -1,6 +1,6 @@
 const vscode = require('vscode'); // eslint-disable-line import/no-unresolved
 const { clearTimeout, setTimeout } = require('timers');
-const { getCommitIcon, getColor, getMergeableIcon, getMergeableState, getPullRequestStateIcon, getReviewState } = require('./utils');
+const { getCommitIcon, getColor, getMergeableIcon, getMergeableState, getPullRequestStateIcon, getReviewState, getEndpointUrl } = require('./utils');
 const { loadPullRequests, loadRepositories } = require('./requests');
 
 const MODES = {
@@ -35,7 +35,11 @@ async function getPullRequests(context, showError) {
 		const showMerged = vscode.workspace.getConfiguration('pullRequestMonitor').get('showMerged');
 		const showClosed = vscode.workspace.getConfiguration('pullRequestMonitor').get('showClosed');
 		const count = vscode.workspace.getConfiguration('pullRequestMonitor').get('count');
-		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError, count });
+		// configure the URL settings
+		const url = getEndpointUrl(vscode.workspace.getConfiguration('pullRequestMonitor').get('githubEnterpriseUrl'));
+		// configure SSL
+		const allowUnsafeSSL = vscode.workspace.getConfiguration('PullRequestMonitor').get('allowUnsafeSSL');
+		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError, count, url, allowUnsafeSSL });
 		if (updatedPullRequests.code === 401) {
 			refreshButton.command = 'PullRequestMonitor.setToken';
 			refreshButton.text = '$(key)';
@@ -178,7 +182,9 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.selectRepository', async () => {
-		const { data: repositories } = await loadRepositories(context.globalState.get('token'));
+		const url = getEndpointUrl(vscode.workspace.getConfiguration('pullRequestMonitor').get('githubEnterpriseUrl'));
+		const allowUnsafeSSL = vscode.workspace.getConfiguration('PullRequestMonitor').get('allowUnsafeSSL');
+		const { data: repositories } = await loadRepositories(context.globalState.get('token'), { url, allowUnsafeSSL });
 		if (!repositories) {
 			return;
 		}

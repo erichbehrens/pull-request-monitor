@@ -115,6 +115,13 @@ exports.getReviewState = (reviews) => {
 	};
 };
 
+exports.getEndpointUrl = (githubEnterpriseUrl) => {
+	if (githubEnterpriseUrl) {
+		return `${githubEnterpriseUrl}/api/graphql`;
+	}
+	return 'https://api.github.com/graphql';
+};
+
 /* test exports */
 exports.getReviewsByAuthor = getReviewsByAuthor;
 exports.getLastStateByAuthor = getLastStateByAuthor;
