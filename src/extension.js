@@ -38,7 +38,7 @@ async function getPullRequests(context, showError) {
 		// configure the URL settings
 		const url = getEndpointUrl(vscode.workspace.getConfiguration('pullRequestMonitor').get('githubEnterpriseUrl'));
 		// configure SSL
-		const allowUnsafeSSL = vscode.workspace.getConfiguration('PullRequestMonitor').get('allowUnsafeSSL');
+		const allowUnsafeSSL = vscode.workspace.getConfiguration('pullRequestMonitor').get('allowUnsafeSSL');
 		const updatedPullRequests = await loadPullRequests(context.globalState.get('token'), { mode, showMerged, showClosed, repository, showError, count, url, allowUnsafeSSL });
 		if (updatedPullRequests.code === 401) {
 			refreshButton.command = 'PullRequestMonitor.setToken';
