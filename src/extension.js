@@ -183,7 +183,7 @@ function activate(context) {
 
 	disposable = vscode.commands.registerCommand('PullRequestMonitor.selectRepository', async () => {
 		const url = getEndpointUrl(vscode.workspace.getConfiguration('pullRequestMonitor').get('githubEnterpriseUrl'));
-		const allowUnsafeSSL = vscode.workspace.getConfiguration('PullRequestMonitor').get('allowUnsafeSSL');
+		const allowUnsafeSSL = vscode.workspace.getConfiguration('pullRequestMonitor').get('allowUnsafeSSL');
 		const { data: repositories } = await loadRepositories(context.globalState.get('token'), { url, allowUnsafeSSL });
 		if (!repositories) {
 			return;
