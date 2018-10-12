@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.7.1
+
+- Fix configuration setting name
+
 ## v1.7.0
 
 - Add support for GitHub enterprise
