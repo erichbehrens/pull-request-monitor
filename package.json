@@ -114,7 +114,7 @@
     },
     "dependencies": {
         "https": "^1.0.0",
-        "isomorphic-fetch": "^2.2.1",
+        "isomorphic-fetch": "^3.0.0",
         "vscode": "^1.1.18"
     },
     "repository": {
